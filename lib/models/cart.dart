@@ -5,14 +5,16 @@ class CartItem {
   String name;
   int quantity;
   double unitPrice;
+  String imageUrl;
 
-  CartItem({required this.productId, required this.name, required this.quantity, required this.unitPrice});
+  CartItem({required this.productId, required this.name, required this.quantity, required this.unitPrice, required this.imageUrl});
 
   Map toJson() => {
       'productId': productId,
       'name': name,
       'quantity': quantity,
-      'unitPrice': unitPrice
+      'unitPrice': unitPrice,
+      'imageUrl': imageUrl,
   };
 }
 
@@ -23,11 +25,11 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
-  void addItem(int productId, double unitPrice, String name,) {
+  void addItem(int productId, double unitPrice, String name, String imageUrl) {
     if (_items.containsKey(productId)) {
-      _items.update(productId, (value) => CartItem(productId: value.productId, name: value.name, quantity: value.quantity + 1, unitPrice: value.unitPrice));
+      _items.update(productId, (value) => CartItem(productId: value.productId, name: value.name, quantity: value.quantity + 1, unitPrice: value.unitPrice, imageUrl: value.imageUrl));
     } else {
-      _items.putIfAbsent(productId, () => CartItem(productId: productId, name: name, quantity: 1, unitPrice: unitPrice));
+      _items.putIfAbsent(productId, () => CartItem(productId: productId, name: name, quantity: 1, unitPrice: unitPrice, imageUrl: imageUrl));
     }
     notifyListeners();
   }
@@ -42,7 +44,7 @@ class Cart with ChangeNotifier {
       return;
     }
     if (_items[productId]!.quantity > 1) {
-      _items.update(productId, (value) => CartItem(productId: value.productId, name: value.name, quantity: value.quantity - 1, unitPrice: value.unitPrice));
+      _items.update(productId, (value) => CartItem(productId: value.productId, name: value.name, quantity: value.quantity - 1, unitPrice: value.unitPrice, imageUrl: value.imageUrl));
     } else {
       _items.remove(productId);
     }
