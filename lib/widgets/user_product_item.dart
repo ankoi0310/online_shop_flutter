@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/products_provider.dart';
+import '../providers/product_provider.dart';
 import '../screens/product_edit_screen.dart';
 
 class UserProductItemWidget extends StatelessWidget {
@@ -15,15 +15,23 @@ class UserProductItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(title),
-      leading: CircleAvatar(backgroundImage: NetworkImage(imageUrl)),
-      trailing: Container(
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(0),
+        child: Image.network(
+          imageUrl,
+          width: 50,
+          height: 100,
+          fit: BoxFit.cover,
+        ),
+      ),
+      trailing: SizedBox(
         width: 100,
         child: Row(
           children: [
             IconButton(
                 onPressed: () => Navigator.of(context)
                     .pushNamed(ProductEditScreen.routeName, arguments: id),
-                icon: Icon(Icons.edit),
+                icon: const Icon(Icons.edit),
                 color: Theme.of(context).primaryColor),
             IconButton(
                 onPressed: () async {
@@ -43,7 +51,7 @@ class UserProductItemWidget extends StatelessWidget {
                     throw Exception('Deleting failed');
                   }
                 },
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 color: Theme.of(context).errorColor),
           ],
         ),

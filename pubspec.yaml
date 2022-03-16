@@ -32,6 +32,7 @@ dependencies:
   provider: ^6.0.2
   intl: ^0.17.0
   http: ^0.13.4
+  flutter_format_money_vietnam: ^0.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -77,10 +78,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Dosis
+    - family: BeVietnamPro
       fonts:
-        - asset: assets/fonts/Dosis-Regular.ttf
-        - asset: assets/fonts/Dosis-Bold.ttf
+        - asset: assets/fonts/BeVietnamPro-Regular.ttf
+        - asset: assets/fonts/BeVietnamPro-Bold.ttf
           weight: 700
 #    - family: Trajan Pro
 #      fonts:

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 
-import '../providers/products_provider.dart';
+import '../providers/product_provider.dart';
 import '../models/product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({Key? key}) : super(key: key);
   static const routeName = '/product-detail';
 
   @override
@@ -19,13 +19,15 @@ class ProductDetailScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 300, width: double.infinity, child: Image.network(loadedProduct.imageUrl, fit: BoxFit.cover,),),
+            // sized box with 50%
+
+            SizedBox(width: MediaQuery.of(context).size.width * 0.5, child: Image.network(loadedProduct.imageUrl, fit: BoxFit.cover,),),
             const SizedBox(height: 10,),
-            Text('\$${loadedProduct.unitPrice}', style: const TextStyle(fontSize: 20, color: Colors.grey),),
+            Text('${loadedProduct.unitPrice}'.toVND(unit: 'VNĐ'), style: const TextStyle(fontSize: 20, color: Colors.grey),),
             const SizedBox(height: 10,),
             Container(
               width: double.infinity,
-              child: const Text('Product description', style: TextStyle(fontSize: 18),),
+              child: Text(loadedProduct.description, style: const TextStyle(fontSize: 18),),
               padding: const EdgeInsets.symmetric(horizontal: 10),
             ),
           ]

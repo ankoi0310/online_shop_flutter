@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:online_shop/screens/product_edit_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/products_provider.dart';
+import '../providers/product_provider.dart';
 import '../widgets/navbar_drawer.dart';
 import '../widgets/user_product_item.dart';
 
@@ -20,7 +20,7 @@ class UserProductScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Products'),
+        title: const Text('Sản phẩm của bạn'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
@@ -33,7 +33,7 @@ class UserProductScreen extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () => _refreshProducts(context),
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: ListView.builder(
             itemCount: productsData.items.length,
             itemBuilder: (ctx, i) => Column(
@@ -43,7 +43,7 @@ class UserProductScreen extends StatelessWidget {
                   productsData.items[i].name,
                   productsData.items[i].imageUrl,
                 ),
-                Divider(),
+                const Divider(),
               ],
             ),
           ),

@@ -5,40 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class ProductsProvider with ChangeNotifier {
-  List<Product> _items = [
-    Product(
-      id: 1,
-      name: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
-      unitPrice: 29.99,
-      imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    ),
-    Product(
-      id: 2,
-      name: 'Trousers',
-      description: 'A nice pair of trousers.',
-      unitPrice: 59.99,
-      imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-    ),
-    Product(
-      id: 3,
-      name: 'Yellow Scarf',
-      description: 'Warm and cozy - exactly what you need for the winter.',
-      unitPrice: 19.99,
-      imageUrl:
-          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
-    ),
-    Product(
-      id: 4,
-      name: 'A Pan',
-      description: 'Prepare any meal you want.',
-      unitPrice: 49.99,
-      imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
-    ),
-  ];
+  List<Product> _items = [];
 
   // getter
   List<Product> get items {
@@ -56,7 +23,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    Uri url = Uri.parse('http://localhost:8080/api/product');
+    Uri url = Uri.parse('http://192.168.1.56:8080/api/product');
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -95,7 +62,7 @@ class ProductsProvider with ChangeNotifier {
   Future<void> updateProduct(int id, Product newProduct) async {
     int prodIndex = _items.indexWhere((element) => element.id == id);
     if (prodIndex >= 0) {
-      Uri url = Uri.parse('http://localhost:8080/api/products/$id');
+      Uri url = Uri.parse('http://192.168.1.56:8080/api/products/$id');
       Map<String, String> headers = {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -117,7 +84,7 @@ class ProductsProvider with ChangeNotifier {
         _items[prodIndex] = newProduct;
         notifyListeners();
       } catch (error) {
-        throw error;
+        rethrow;
       }
     } else {
       print("problem with updating product");
@@ -126,15 +93,12 @@ class ProductsProvider with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     Uri url = Uri.parse(
-        'http://localhost:8080/api/products/search/findByCategoryId?id=5');
+        'http://192.168.1.56:8080/api/products');
     try {
       final response = await http_client.get(url);
-      print(json.decode(response.body)['_embedded']['products']);
-      final extractedData =
-          json.decode(response.body)['_embedded']['products'] as List<dynamic>;
+      final extractedData = json.decode(utf8.decode(response.bodyBytes))['_embedded']['products'] as List<dynamic>;
       final List<Product> loadProducts = [];
-      extractedData.forEach((element) {
-        // print(element);
+      for (var element in extractedData) {
         loadProducts.add(Product(
           id: element['id'],
           name: element['name'],
@@ -143,16 +107,16 @@ class ProductsProvider with ChangeNotifier {
           imageUrl: element['imageUrl'],
           isFavorite: element['favorite'],
         ));
-      });
+      }
       _items = loadProducts;
       notifyListeners();
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 
   Future<String> deleteProduct(int id) async {
-    Uri url = Uri.parse('http://localhost:8080/api/products/$id');
+    Uri url = Uri.parse('http://192.168.1.56:8080/api/products/$id');
 
     String message = '';
     try {
@@ -161,12 +125,11 @@ class ProductsProvider with ChangeNotifier {
         _items.removeWhere((element) => element.id == id);
         notifyListeners();
       } else {
-        // print(json.decode(response.body));
-        message = json.decode(response.body)['message'];
+        message = json.decode(utf8.decode(response.bodyBytes))['message'];
       }
       return message;
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 }

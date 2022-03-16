@@ -6,7 +6,7 @@ class Product with ChangeNotifier {
   int id;
   String name;
   String description;
-  double unitPrice;
+  int unitPrice;
   String imageUrl;
   bool isFavorite;
 
@@ -23,18 +23,18 @@ class Product with ChangeNotifier {
   };
 
   Future<void> toggleFavoriteStatus() {
-    Uri url = Uri.parse('http://localhost:8080/api/products/$id');
+    Uri url = Uri.parse('http://192.168.1.56:8080/api/products/$id');
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
     };
 
     return http_client.put(url, headers: headers, body: json.encode({
-      'name': this.name,
-      'description': this.description,
-      'unitPrice': this.unitPrice,
-      'imageUrl': this.imageUrl,
-      'favorite': !this.isFavorite,
+      'name': name,
+      'description': description,
+      'unitPrice': unitPrice,
+      'imageUrl': imageUrl,
+      'favorite': !isFavorite,
       'unitsInStock': 100,
       'active': true,
       'category': {"id": 5, "categoryName": "MobileProduct"}
@@ -45,7 +45,7 @@ class Product with ChangeNotifier {
       } else {
         try {
           print(json.decode(response.body));
-        } on FormatException catch (e) {
+        } on FormatException catch (_) {
           print('Message return is not a valid JSON format');
         }
       }

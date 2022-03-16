@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
-import '../providers/products_provider.dart';
+import '../providers/product_provider.dart';
 
 class ProductEditScreen extends StatefulWidget {
   static const routeName = '/product-edit';
@@ -27,11 +27,13 @@ class _ProductEditScreen extends State<ProductEditScreen> {
     'imageUrl': '',
   };
 
+  @override
   void initState() {
     _imageFocusNode.addListener(_updateImageUrl);
     super.initState();
   }
 
+  @override
   void didChangeDependencies() {
     if (_isInit) {
       if (ModalRoute.of(context)!.settings.arguments != null) {
@@ -77,13 +79,13 @@ class _ProductEditScreen extends State<ProductEditScreen> {
           setState(() {_isLoading = false;});
         } catch (error) {
           await showDialog(context: context, builder: (ctx) => AlertDialog(
-              title: Text('Error'), content: Text(error.toString(),),
+              title: const Text('Error'), content: Text(error.toString(),),
               actions: <Widget>[FlatButton(onPressed: () => {Navigator.of(ctx).pop(), setState(() {_isLoading = false;}),}, child: Text('Okay'))]
           ));
         }
       } catch (error) {
         await showDialog(context: context, builder: (ctx) => AlertDialog(
-            title: Text('Error'), content: Text(error.toString(),),
+            title: const Text('Error'), content: Text(error.toString(),),
             actions: <Widget>[FlatButton(onPressed: () => {Navigator.of(ctx).pop(), setState(() {_isLoading = false;}),}, child: Text('Okay'))]
         ));
       }
@@ -99,11 +101,11 @@ class _ProductEditScreen extends State<ProductEditScreen> {
           IconButton(icon: const Icon(Icons.save), onPressed: _saveForm)
         ],
       ),
-      body: _isLoading ? Center(child: CircularProgressIndicator(),) : Padding(
+      body: _isLoading ? const Center(child: CircularProgressIndicator(),) : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(key: _form, child: SingleChildScrollView(child: Column(
           children: <Widget>[
-            TextFormField(decoration: InputDecoration(labelText: 'Title'), textInputAction: TextInputAction.next,
+            TextFormField(decoration: const InputDecoration(labelText: 'Title'), textInputAction: TextInputAction.next,
               initialValue: _initValues['name'],
               onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_priceFocusNode),
               onSaved: (value) => _editedProduct = Product(id: _editedProduct.id, name: value!, description: _editedProduct.description, unitPrice: _editedProduct.unitPrice, imageUrl: _editedProduct.imageUrl,),
@@ -114,10 +116,10 @@ class _ProductEditScreen extends State<ProductEditScreen> {
                 return null;
               },
             ),
-            TextFormField(decoration: InputDecoration(labelText: 'Price'), focusNode: _priceFocusNode, textInputAction: TextInputAction.next, keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+            TextFormField(decoration: const InputDecoration(labelText: 'Price'), focusNode: _priceFocusNode, textInputAction: TextInputAction.next, keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
               initialValue: _initValues['unitPrice'],
               onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_descriptionFocusNode),
-              onSaved: (value) => _editedProduct = Product(id: _editedProduct.id, name: _editedProduct.name, description: _editedProduct.description, unitPrice: double.parse(value!), imageUrl: _editedProduct.imageUrl,),
+              onSaved: (value) => _editedProduct = Product(id: _editedProduct.id, name: _editedProduct.name, description: _editedProduct.description, unitPrice: int.parse(value!), imageUrl: _editedProduct.imageUrl,),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Please enter a price.';
