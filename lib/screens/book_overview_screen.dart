@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:online_shop/models/category.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/product_provider.dart';
-import '../widgets/products_grid.dart';
+import '../providers/book_provider.dart';
+import '../providers/category_provider.dart';
+import '../widgets/books_grid.dart';
 import '../widgets/navbar_drawer.dart';
 
 enum FilterOptions {
@@ -10,14 +12,17 @@ enum FilterOptions {
   all,
 }
 
-class ProductOverviewScreen extends StatefulWidget {
+class BookOverviewScreen extends StatefulWidget {
+  final int categoryId;
+
+  BookOverviewScreen({required this.categoryId});
 
   @override
-  State<StatefulWidget> createState() => _ProductOverviewScreen();
+  State<StatefulWidget> createState() => _BookOverviewScreen();
 
 }
 
-class _ProductOverviewScreen extends State<ProductOverviewScreen> {
+class _BookOverviewScreen extends State<BookOverviewScreen> {
   bool _showFavoriteOnly = false;
   bool _isLoading = false;
   bool _isInit = true;
@@ -26,7 +31,8 @@ class _ProductOverviewScreen extends State<ProductOverviewScreen> {
   void didChangeDependencies() {
     if (_isInit) {
       setState(() { _isLoading = true;});
-      Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((value) => setState(() { _isLoading = false; }));
+      Provider.of<CategoryProvider>(context).fetchAndSetCategories();
+      Provider.of<BookProvider>(context).fetchAndSetBooks().then((value) => setState(() { _isLoading = false; }));
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -34,6 +40,7 @@ class _ProductOverviewScreen extends State<ProductOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int categoryId = widget.categoryId;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cửa Hàng Của Tôi'),
@@ -57,7 +64,7 @@ class _ProductOverviewScreen extends State<ProductOverviewScreen> {
         ],
       ),
       drawer: NavbarDrawer(),
-      body: _isLoading ? const Center(child: CircularProgressIndicator(),) : ProductsGrid(_showFavoriteOnly),
+      body: _isLoading ? const Center(child: CircularProgressIndicator(),) : BooksGrid(_showFavoriteOnly, categoryId),
     );
   }
 }

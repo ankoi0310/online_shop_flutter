@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:online_shop/providers/category_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/product_provider.dart';
-import 'screens/product_detail_screen.dart';
-import 'screens/product_overview_screen.dart';
-import 'screens/user_product_screen.dart';
-import 'screens/product_edit_screen.dart';
+import 'providers/book_provider.dart';
+import 'screens/book_detail_screen.dart';
+import 'screens/book_overview_screen.dart';
+import 'screens/user_book_screen.dart';
+import 'screens/book_edit_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (BuildContext context)=> ProductsProvider(),),
+        ChangeNotifierProvider(create: (BuildContext context)=> BookProvider(),),
+        ChangeNotifierProvider(create: (BuildContext context)=> CategoryProvider(),),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -27,11 +29,11 @@ class MyApp extends StatelessWidget {
           fontFamily: 'BeVietnamPro',
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(secondary: Colors.redAccent),
         ),
-        home: ProductOverviewScreen(),
+        home: BookOverviewScreen(categoryId: 0),
         routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-          UserProductScreen.routeName: (ctx) => UserProductScreen(),
-          ProductEditScreen.routeName: (ctx) => ProductEditScreen(),
+          BookDetailScreen.routeName: (ctx) => BookDetailScreen(),
+          UserBookScreen.routeName: (ctx) => UserBookScreen(),
+          BookEditScreen.routeName: (ctx) => BookEditScreen(),
         },
       ),
     );

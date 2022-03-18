@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/product_provider.dart';
-import '../screens/product_edit_screen.dart';
+import '../providers/book_provider.dart';
+import '../screens/book_edit_screen.dart';
 
-class UserProductItemWidget extends StatelessWidget {
+class UserBookItemWidget extends StatelessWidget {
   final int id;
   final String title;
   final String imageUrl;
 
-  UserProductItemWidget(this.id, this.title, this.imageUrl);
+  UserBookItemWidget(this.id, this.title, this.imageUrl);
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +30,16 @@ class UserProductItemWidget extends StatelessWidget {
           children: [
             IconButton(
                 onPressed: () => Navigator.of(context)
-                    .pushNamed(ProductEditScreen.routeName, arguments: id),
+                    .pushNamed(BookEditScreen.routeName, arguments: id),
                 icon: const Icon(Icons.edit),
                 color: Theme.of(context).primaryColor),
             IconButton(
                 onPressed: () async {
                   try {
-                    String message = await Provider.of<ProductsProvider>(
+                    String message = await Provider.of<BookProvider>(
                             context,
                             listen: false)
-                        .deleteProduct(id);
+                        .deleteBook(id);
                     if (message != '') {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

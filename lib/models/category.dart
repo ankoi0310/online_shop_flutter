@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Category with ChangeNotifier {
-  final String id;
+  final int id;
   final String name;
 
   Category({

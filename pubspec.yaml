@@ -33,6 +33,7 @@ dependencies:
   intl: ^0.17.0
   http: ^0.13.4
   flutter_format_money_vietnam: ^0.0.2
+  syncfusion_flutter_datepicker: ^19.4.56
 
 
   # The following adds the Cupertino Icons font to your application.
